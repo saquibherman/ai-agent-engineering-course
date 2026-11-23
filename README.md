@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 26 of 73 lessons committed. Latest: `Day09_P1`, Explicit agent state.
+> **Progress:** 27 of 73 lessons committed. Latest: `Day09_P2`, Plan -> Execute -> Observe loop over MCP.
 
 ## Overview
 
@@ -285,6 +285,7 @@ while can_continue(state):                         # not finished and step < max
 ```
 
 - [`Day09_P1`](./Day09/Day09_P1/agent/) **Agent state:** `state.py` is a plain dict factory plus helpers (`add_action`, `record_observation`, `can_continue`, `finish`).
+- [`Day09_P2`](./Day09/Day09_P2/agent/) **Full loop over MCP:** separate `planner`, `executor`, `loop` and `runner` modules drive the state against the MCP time server.
 
 Run: `cd agent && uv run python runner.py`
 
@@ -324,12 +325,14 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 24 | [`Day08_P3`](./Day08/Day08_P3/) | Planner built from discovered MCP tools |
 | 25 | [`Day08_P4`](./Day08/Day08_P4/) | Execute the chosen MCP tool and answer naturally |
 | 26 | [`Day09_P1`](./Day09/Day09_P1/) | Explicit agent state |
+| 27 | [`Day09_P2`](./Day09/Day09_P2/) | Plan -> Execute -> Observe loop over MCP |
 
 ## Known Issues
 
 Open problems in the course code, kept as-is so each lesson matches the course.
 
 - **Model names vary:** the `.env` template uses `qwen3:4b-gpu`, but several days hard-code `qwen3:1.7b` or `qwen3:4b` (see [Setup](#setup)), so pull all of them.
+- **Day09_P2 `test_state.py`:** it imports `from Day09.agent.state import *`, a package path from the course's original layout, so it fails when run from `Day09_P2/agent`. `Day09_P1/agent/test_state.py` is the working version.
 
 ## Useful Links
 
