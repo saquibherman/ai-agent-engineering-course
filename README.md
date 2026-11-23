@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 34 of 73 lessons committed. Latest: `Day12`, Advanced RAG pipeline (chunking, Chroma, hybrid search, reranking).
+> **Progress:** 35 of 73 lessons committed. Latest: `Day13_P1`, Multi-server MCP tool registry.
 
 ## Overview
 
@@ -26,6 +26,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [10. Task Decomposition - Day10](#10-task-decomposition---day10)
   - [11. Persistent Semantic Memory - Day11](#11-persistent-semantic-memory---day11)
   - [12. Advanced RAG Pipeline - Day12](#12-advanced-rag-pipeline---day12)
+  - [13. Multi-Server MCP and Remote Servers - Day13](#13-multi-server-mcp-and-remote-servers---day13)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -356,6 +357,22 @@ return rerank(query, top_candidates, top_k=3)     # LLM rates each chunk's relev
 
 Run: `uv run python main.py`. It indexes `documents/python.txt` into `./chroma_db` (git-ignored), then answers questions until you type `quit`.
 
+## 13. Multi-Server MCP and Remote Servers - Day13
+
+Real agents connect to **several MCP servers at once**. A **tool registry** maps each tool name to the client of the server that provides it, so the planner sees one combined tool list. MCP servers can also run **remotely over HTTP** instead of as a local stdio subprocess.
+
+```python
+for server in servers:                              # "time-mcp-server/server.py", "http://127.0.0.1:8000/mcp"
+    client = await connect(server)
+    for tool in await discover_tools(client):
+        tool_registry[tool.name] = {"client": client, "tool": tool}
+
+# weather-mcp-server/server.py
+mcp.run(transport="http", host="127.0.0.1", port=8000)
+```
+
+- [`Day13_P1`](./Day13/Day13_P1/) **Multi-server registry:** `mcp_manager.create_tool_registry()` over the time and weather servers (`registry_demo.py`).
+
 ---
 
 ## Lesson Index
@@ -398,6 +415,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 32 | [`Day11_P3`](./Day11/Day11_P3/) | LLM memory extraction - store only durable facts |
 | 33 | [`Day11_P4`](./Day11/Day11_P4/) | Checkpoint of the memory-augmented agent |
 | 34 | [`Day12`](./Day12/Day12/) | Advanced RAG pipeline (chunking, Chroma, hybrid search, reranking) |
+| 35 | [`Day13_P1`](./Day13/Day13_P1/) | Multi-server MCP tool registry |
 
 ## Known Issues
 
