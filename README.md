@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 5 of 73 lessons committed. Latest: `Day02_P3`, Human-readable conversation history.
+> **Progress:** 6 of 73 lessons committed. Latest: `Day03_P1`, System prompt persona.
 
 ## Overview
 
@@ -15,6 +15,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
 - **Part I: Foundations, built by hand with the OpenAI client**
   - [1. First Calls to a Local LLM - Day01](#1-first-calls-to-a-local-llm---day01)
   - [2. Chat Loop and Conversation Memory - Day02](#2-chat-loop-and-conversation-memory---day02)
+  - [3. System Prompts and Personas - Day03](#3-system-prompts-and-personas---day03)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -133,6 +134,18 @@ Run: `uv run python assistant.py`
 
 **Note:** the whole history is re-sent every turn, so long chats cost more tokens and eventually exceed the model's context window. Later days replace this with retrieval-based memory (Day11).
 
+## 3. System Prompts and Personas - Day03
+
+A **system message** at the start of `messages` sets the model's behavior for the whole conversation: its tone, role and rules. Changing only this one message makes the same model act as a completely different assistant.
+
+```python
+messages = [{"role": "system", "content": roles.get(choice, "You are a helpful AI assistant.")}]
+```
+
+- [`Day03_P1`](./Day03/Day03_P1/) **System prompt persona:** a fixed "friendly AI teacher" persona.
+
+Run: `uv run python assistant.py`
+
 ---
 
 ## Lesson Index
@@ -146,6 +159,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 3 | [`Day02_P1`](./Day02/Day02_P1/) | Conversation memory with a growing messages list |
 | 4 | [`Day02_P2`](./Day02/Day02_P2/) | Print the raw conversation history after each turn |
 | 5 | [`Day02_P3`](./Day02/Day02_P3/) | Human-readable conversation history |
+| 6 | [`Day03_P1`](./Day03/Day03_P1/) | System prompt persona |
 
 ## Known Issues
 
