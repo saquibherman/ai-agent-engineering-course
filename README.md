@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 62 of 73 lessons committed. Latest: `Day19_P9`, Final LangChain agent - MCP tools + RAG tool.
+> **Progress:** 63 of 73 lessons committed. Latest: `Day20_P1`, Serve a LangChain agent over FastAPI.
 
 ## Overview
 
@@ -34,6 +34,8 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [17. Multi-Agent Crews with CrewAI - Day17](#17-multi-agent-crews-with-crewai---day17)
   - [18. Self-Verifying Web Research Agent - Day18](#18-self-verifying-web-research-agent---day18)
   - [19. Rebuilding the Stack on LangChain - Day19](#19-rebuilding-the-stack-on-langchain---day19)
+- **Part IV: Shipping agents**
+  - [20. Serving Agents over FastAPI and Docker - Day20](#20-serving-agents-over-fastapi-and-docker---day20)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -546,6 +548,41 @@ Run: `uv run python main.py`; P8: `uv run python memory_with_history.py`; P9: `u
 
 ---
 
+# Part IV: Shipping Agents
+
+## 20. Serving Agents over FastAPI and Docker - Day20
+
+An agent becomes a **service** when it sits behind an HTTP API. Each part adds one production concern:
+
+```python
+# simplified from Day20_P6/main.py
+@app.post("/chat", response_model=ChatResponse)
+async def chat(request: Request, body: ChatRequest):
+    request_id = str(uuid.uuid4())                          # trace one request through logs
+    if not check_rate_limit(request.client.host):           # 10 requests / 60 s per client
+        raise HTTPException(status_code=429, detail="Rate limit exceeded")
+    result = await run_agent(body.message)                  # @retry(stop_after_attempt(2), exponential wait)
+    ...
+```
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /health` | Liveness: the process is up |
+| `GET /ready` | Readiness: Ollama answers at `{OLLAMA_BASE_URL}/api/tags` |
+| `POST /chat` | `{"message": "..."}` → `{"answer": "..."}` |
+
+- [`Day20_P1`](./Day20/Day20_P1/) **FastAPI shell:** a bare LangChain agent behind a chat endpoint.
+
+Run locally (from `Day20/Day20_P6`):
+```bash
+uv run uvicorn main:app --reload               # then open http://127.0.0.1:8000/docs
+curl -X POST http://127.0.0.1:8000/chat -H "Content-Type: application/json" -d '{"message": "What time is it?"}'
+```
+
+**Note:** the rate limiter keeps its state in process memory, so it resets on restart and isn't shared between workers. Production setups usually use Redis or an API gateway for this.
+
+---
+
 ## Lesson Index
 
 Every lesson below was added in its own commit; the commit message explains the code changes in detail.
@@ -614,6 +651,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 60 | [`Day19_P7`](./Day19/Day19_P7/) | RAG with LangChain and FAISS |
 | 61 | [`Day19_P8`](./Day19/Day19_P8/) | Conversation memory demo in LangChain |
 | 62 | [`Day19_P9`](./Day19/Day19_P9/) | Final LangChain agent - MCP tools + RAG tool |
+| 63 | [`Day20_P1`](./Day20/Day20_P1/) | Serve a LangChain agent over FastAPI |
 
 ## Known Issues
 
