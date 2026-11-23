@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 3 of 73 lessons committed. Latest: `Day02_P1`, Conversation memory with a growing messages list.
+> **Progress:** 4 of 73 lessons committed. Latest: `Day02_P2`, Print the raw conversation history after each turn.
 
 ## Overview
 
@@ -126,6 +126,7 @@ while True:
 ```
 
 - [`Day02_P1`](./Day02/Day02_P1/) **Conversation loop:** an `input()` loop that appends both sides of the conversation to `messages`. Type `quit` to exit.
+- [`Day02_P2`](./Day02/Day02_P2/) **Print history:** prints the full `messages` list after every turn, so you can watch the context grow.
 
 Run: `uv run python assistant.py`
 
@@ -142,6 +143,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 1 | [`Day01_P1`](./Day01/Day01_P1/) | First call to a local LLM (hello_ai.py) |
 | 2 | [`Day01_P2`](./Day01/Day01_P2/) | Interactive assistant loop (assistant.py) |
 | 3 | [`Day02_P1`](./Day02/Day02_P1/) | Conversation memory with a growing messages list |
+| 4 | [`Day02_P2`](./Day02/Day02_P2/) | Print the raw conversation history after each turn |
 
 ## Known Issues
 
