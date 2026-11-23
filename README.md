@@ -722,7 +722,6 @@ Every lesson below was added in its own commit; the commit message explains the 
 Open problems in the course code, kept as-is so each lesson matches the course.
 
 - **Model names vary:** the `.env` template uses `qwen3:4b-gpu`, but several days hard-code `qwen3:1.7b` or `qwen3:4b` (see [Setup](#setup)), so pull all of them.
-- **Day09_P2 `test_state.py`:** it imports `from Day09.agent.state import *`, a package path from the course's original layout, so it fails when run from `Day09_P2/agent`. `Day09_P1/agent/test_state.py` is the working version.
 - **Day21_P5 verification is lenient:** to always finish a run, `verify_finding` auto-verifies when the model's JSON can't be parsed and `mark_note_verified` falls back to the first unverified note. Day18_P4 has the strict version.
 
 ## Useful Links

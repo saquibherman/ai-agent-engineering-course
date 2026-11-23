@@ -1,4 +1,4 @@
-from Day09.agent.state import *
+from state import *
 
 state = create_state(
     "Generate a password and tell me the current time."
