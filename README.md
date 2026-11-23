@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 48 of 73 lessons committed. Latest: `Day17_P2`, Give a CrewAI agent an MCP tool.
+> **Progress:** 49 of 73 lessons committed. Latest: `Day17_P3`, Hierarchical process and crew memory.
 
 ## Overview
 
@@ -476,6 +476,7 @@ result = crew.kickoff()
 
 - [`Day17_P1`](./Day17/Day17_P1/) **CrewAI crew:** researcher, coder and reviewer with sequential tasks on a local Ollama model.
 - [`Day17_P2`](./Day17/Day17_P2/) **MCP tools in a crew:** wraps the Day08 MCP client as a CrewAI `@tool` (`mcp_current_time`). `asyncio.run()` bridges CrewAI's synchronous tools to the asynchronous MCP client.
+- [`Day17_P3`](./Day17/Day17_P3/) **Memory and hierarchy:** switches to `Process.hierarchical` with a `manager_llm`, and adds a second `memory_crew` that uses CrewAI's built-in memory (Ollama embeddings) to recall facts across tasks.
 
 Run: `uv run python main.py`
 
@@ -535,6 +536,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 46 | [`Day16_P3`](./Day16/Day16_P3/) | Human-in-the-loop approval with interrupt() |
 | 47 | [`Day17_P1`](./Day17/Day17_P1/) | Multi-agent crew with CrewAI |
 | 48 | [`Day17_P2`](./Day17/Day17_P2/) | Give a CrewAI agent an MCP tool |
+| 49 | [`Day17_P3`](./Day17/Day17_P3/) | Hierarchical process and crew memory |
 
 ## Known Issues
 
