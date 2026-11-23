@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 27 of 73 lessons committed. Latest: `Day09_P2`, Plan -> Execute -> Observe loop over MCP.
+> **Progress:** 28 of 73 lessons committed. Latest: `Day10_P1`, LLM task decomposition.
 
 ## Overview
 
@@ -23,6 +23,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
 - **Part II: Agent architecture**
   - [8. Model Context Protocol (MCP) - Day08](#8-model-context-protocol-mcp---day08)
   - [9. Agent State and the Plan-Execute-Observe Loop - Day09](#9-agent-state-and-the-plan-execute-observe-loop---day09)
+  - [10. Task Decomposition - Day10](#10-task-decomposition---day10)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -291,6 +292,21 @@ Run: `cd agent && uv run python runner.py`
 
 **Why `max_steps` matters:** without it, a planner that never returns `FINISH` loops forever. The planner prompt also passes in `Completed Actions` and says "never repeat an action" to stop the model calling the same tool again and again.
 
+## 10. Task Decomposition - Day10
+
+Complex requests ("check the time, then roll a dice and make me a password") work better when they're first **broken into ordered subtasks**. The agent loop then works through them one at a time.
+
+```python
+def decompose_task(user_request):
+    # prompt rules: only necessary tasks, in execution order, one per line, no numbering
+    result = llm(prompt)
+    return [line.strip() for line in result.splitlines() if line.strip()]
+```
+
+- [`Day10_P1`](./Day10/Day10_P1/) **Task decomposition:** `task_planner.decompose_task()` returns a list of subtasks (`test_task_planner.py`).
+
+Run: `uv run python runner.py`
+
 ---
 
 ## Lesson Index
@@ -326,6 +342,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 25 | [`Day08_P4`](./Day08/Day08_P4/) | Execute the chosen MCP tool and answer naturally |
 | 26 | [`Day09_P1`](./Day09/Day09_P1/) | Explicit agent state |
 | 27 | [`Day09_P2`](./Day09/Day09_P2/) | Plan -> Execute -> Observe loop over MCP |
+| 28 | [`Day10_P1`](./Day10/Day10_P1/) | LLM task decomposition |
 
 ## Known Issues
 
