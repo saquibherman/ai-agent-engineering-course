@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 11 of 73 lessons committed. Latest: `Day04_P4`, Wire the tool manager into the assistant.
+> **Progress:** 12 of 73 lessons committed. Latest: `Day05_P1`, File-reading tool.
 
 ## Overview
 
@@ -17,6 +17,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [2. Chat Loop and Conversation Memory - Day02](#2-chat-loop-and-conversation-memory---day02)
   - [3. System Prompts and Personas - Day03](#3-system-prompts-and-personas---day03)
   - [4. Hand-Written Tools and a Router - Day04](#4-hand-written-tools-and-a-router---day04)
+  - [5. File Tools and Grounded Q&A - Day05](#5-file-tools-and-grounded-qa---day05)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -173,6 +174,21 @@ Run: `uv run python assistant.py`; tests: `uv run python test_tools.py`, `uv run
 
 **Limitation:** "what time should I leave?" triggers the time tool. Day07 fixes this by letting the LLM choose the tool.
 
+## 5. File Tools and Grounded Q&A - Day05
+
+**Grounding** means pasting a document's content into the prompt and telling the model to answer *only* from it. This is the manual form of RAG and the main way to reduce hallucinations about your own data.
+
+```python
+prompt = f"""Answer the question using only the document below.
+Document:
+{file_content}
+Question: {question}"""
+```
+
+- [`Day05_P1`](./Day05/Day05_P1/) **File-reading tool:** `read_text_file()` and sample files in `data/`, tested by `test_file_tool.py`.
+
+Run: `uv run python assistant.py`, then for example `ask notes.txt What is the project about?`
+
 ---
 
 ## Lesson Index
@@ -192,6 +208,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 9 | [`Day04_P2`](./Day04/Day04_P2/) | Keyword-routed tools inside the chat loop |
 | 10 | [`Day04_P3`](./Day04/Day04_P3/) | Extract routing into a tool manager |
 | 11 | [`Day04_P4`](./Day04/Day04_P4/) | Wire the tool manager into the assistant |
+| 12 | [`Day05_P1`](./Day05/Day05_P1/) | File-reading tool |
 
 ## Known Issues
 
