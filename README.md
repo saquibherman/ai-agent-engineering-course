@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 21 of 73 lessons committed. Latest: `Day07_P2`, Planner-driven assistant.
+> **Progress:** 22 of 73 lessons committed. Latest: `Day08_P1`, MCP server and client with FastMCP.
 
 ## Overview
 
@@ -20,6 +20,8 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [5. File Tools and Grounded Q&A - Day05](#5-file-tools-and-grounded-qa---day05)
   - [6. Retrieval: Keywords to Embeddings (First RAG) - Day06](#6-retrieval-keywords-to-embeddings-first-rag---day06)
   - [7. LLM-Based Tool Planner - Day07](#7-llm-based-tool-planner---day07)
+- **Part II: Agent architecture**
+  - [8. Model Context Protocol (MCP) - Day08](#8-model-context-protocol-mcp---day08)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -238,6 +240,32 @@ Run: `uv run python assistant.py`
 
 ---
 
+# Part II: Agent Architecture
+
+## 8. Model Context Protocol (MCP) - Day08
+
+**MCP** is an open protocol that lets an agent **discover** and **call** tools that live in a separate server process. Tools no longer have to be imported functions. Any MCP server, in any language, can plug into any MCP client. This repo uses [FastMCP](https://gofastmcp.com).
+
+```python
+# server.py: a tool is a decorated function; its docstring becomes the description
+mcp = FastMCP("Time Server")
+
+@mcp.tool()
+def current_time():
+    """Return the current date and time."""
+    return datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+
+# mcp_client.py: Client("server.py") launches the server over stdio
+tools  = await client.list_tools()                 # discover
+result = await client.call_tool("current_time", {})  # execute
+```
+
+- [`Day08_P1`](./Day08/Day08_P1/) **MCP client and server:** a FastMCP time server and a client that connects and lists its tools (`test_client.py`).
+
+Run: `uv run python agent.py`. The client starts `server.py` itself over stdio, so you don't need to run the server separately.
+
+---
+
 ## Lesson Index
 
 Every lesson below was added in its own commit; the commit message explains the code changes in detail.
@@ -265,6 +293,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 19 | [`Day06_P5`](./Day06/Day06_P5/) | End-to-end RAG over the knowledge folder |
 | 20 | [`Day07_P1`](./Day07/Day07_P1/) | LLM-based tool planner |
 | 21 | [`Day07_P2`](./Day07/Day07_P2/) | Planner-driven assistant |
+| 22 | [`Day08_P1`](./Day08/Day08_P1/) | MCP server and client with FastMCP |
 
 ## Known Issues
 
