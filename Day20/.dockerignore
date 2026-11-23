@@ -1,0 +1,6 @@
+# Keep secrets and local artifacts out of the image
+**/.env
+**/.venv
+**/venv
+**/__pycache__
+**/*.pyc

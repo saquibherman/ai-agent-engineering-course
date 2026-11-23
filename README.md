@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 67 of 73 lessons committed. Latest: `Day20_P5`, Retries, timeouts, rate limiting and structured logs.
+> **Progress:** 68 of 73 lessons committed. Latest: `Day20_P6`, Serve the MCP + RAG agent, add evaluation and Docker.
 
 ## Overview
 
@@ -576,6 +576,8 @@ async def chat(request: Request, body: ChatRequest):
 - [`Day20_P3`](./Day20/Day20_P3/) **Lifespan:** an `asynccontextmanager` handler logs startup and shutdown; uses `httpx` for outbound calls.
 - [`Day20_P4`](./Day20/Day20_P4/) **Pinned dependencies:** a service-level `requirements.txt` and a configurable `OLLAMA_BASE_URL`.
 - [`Day20_P5`](./Day20/Day20_P5/) **Resilience:** `tenacity` retries, an in-memory sliding-window rate limiter, request IDs and structured logs.
+- [`Day20_P6`](./Day20/Day20_P6/) **MCP and RAG tools:** the Day19_P9 agent served over HTTP, plus `evaluation/`, which checks that test prompts trigger the expected tool. Building the agent is async (it discovers the MCP tools first), so it is created once at startup in the `lifespan` handler. Dependencies in `requirements.txt` are pinned to versions tested together.
+- [`Day20/Dockerfile`](./Day20/Dockerfile) and [`docker-compose.yml`](./Day20/docker-compose.yml) **Containerize:** packages the `Day20_P6` service as a `python:3.12-slim` image running uvicorn on port 8000, with a compose healthcheck against `/health`.
 
 Run locally (from `Day20/Day20_P6`):
 ```bash
@@ -583,6 +585,19 @@ uv run uvicorn main:app --reload               # then open http://127.0.0.1:8000
 curl -X POST http://127.0.0.1:8000/chat -H "Content-Type: application/json" -d '{"message": "What time is it?"}'
 ```
 
+Evaluate tool selection (from `Day20/Day20_P6`): `uv run python -m evaluation.run_evaluation`
+
+Run in Docker (from `Day20/`; Ollama keeps running on the host):
+```bash
+docker compose up --build               # needs Day20_P6/.env with MODEL_NAME
+curl http://127.0.0.1:8000/health
+```
+
+How the container setup works:
+- **Build context:** `docker-compose.yml` builds from `Day20/`, so the `Dockerfile` copies `Day20_P6/` into `/app`.
+- **No secrets in the image:** `.dockerignore` excludes `.env` files. Settings come from `env_file` when the container runs.
+- **Reaching Ollama:** inside a container, `localhost` is the container itself. Compose therefore sets `OLLAMA_BASE_URL=http://host.docker.internal:11434` and maps that name to the host, which also works on Linux. The chat model and the RAG embeddings both use this URL.
+- **Startup time:** the healthcheck has a 30 s `start_period`, because creating the agent (MCP tools and embeddings) happens at startup.
 **Note:** the rate limiter keeps its state in process memory, so it resets on restart and isn't shared between workers. Production setups usually use Redis or an API gateway for this.
 
 ---
@@ -660,6 +675,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 65 | [`Day20_P3`](./Day20/Day20_P3/) | Lifespan hooks and health/readiness probes |
 | 66 | [`Day20_P4`](./Day20/Day20_P4/) | Configurable Ollama URL and service requirements |
 | 67 | [`Day20_P5`](./Day20/Day20_P5/) | Retries, timeouts, rate limiting and structured logs |
+| 68 | [`Day20_P6`](./Day20/Day20_P6/) | Serve the MCP + RAG agent, add evaluation and Docker |
 
 ## Known Issues
 

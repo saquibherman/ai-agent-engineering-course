@@ -1,0 +1,25 @@
+# Pinned to versions tested together (repo venv, 2026-11-23).
+# Unpinned installs pull an mcp release that fastmcp cannot import.
+
+# API
+fastapi[standard]==0.165.0
+uvicorn==0.54.0
+httpx==0.28.1
+tenacity==9.2.1
+python-dotenv==1.2.4
+
+# Agent (LangChain + Ollama)
+langchain==1.5.2
+langchain-core==1.8.4
+langgraph==1.2.24
+langchain-ollama==1.1.0
+
+# MCP tools (server.py + MultiServerMCPClient)
+fastmcp==3.4.11
+mcp==1.30.0
+langchain-mcp-adapters==0.3.2
+
+# RAG tool (notes.txt -> FAISS)
+langchain-community==0.4.2
+langchain-text-splitters==1.1.3
+faiss-cpu==1.16.0
