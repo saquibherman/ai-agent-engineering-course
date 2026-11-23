@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 1 of 73 lessons committed. Latest: `Day01_P1`, First call to a local LLM (hello_ai.py).
+> **Progress:** 2 of 73 lessons committed. Latest: `Day01_P2`, Interactive assistant loop (assistant.py).
 
 ## Overview
 
@@ -107,6 +107,7 @@ print(response.choices[0].message.content)
 ```
 
 - [`Day01_P1`](./Day01/Day01_P1/) **Hello AI:** `hello_ai.py` sends one question to the local model and prints the reply.
+- [`Day01_P2`](./Day01/Day01_P2/) **assistant.py:** the same call wrapped in `assistant.py`, the file the next days grow.
 
 Run: `uv run python hello_ai.py`
 
@@ -119,6 +120,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | # | Lesson | What it adds |
 |---|---|---|
 | 1 | [`Day01_P1`](./Day01/Day01_P1/) | First call to a local LLM (hello_ai.py) |
+| 2 | [`Day01_P2`](./Day01/Day01_P2/) | Interactive assistant loop (assistant.py) |
 
 ## Known Issues
 
