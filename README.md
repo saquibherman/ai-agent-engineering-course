@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 46 of 73 lessons committed. Latest: `Day16_P3`, Human-in-the-loop approval with interrupt().
+> **Progress:** 47 of 73 lessons committed. Latest: `Day17_P1`, Multi-agent crew with CrewAI.
 
 ## Overview
 
@@ -31,6 +31,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [15. Production Hardening - Day15](#15-production-hardening---day15)
 - **Part III: Agent frameworks**
   - [16. Agents as Graphs with LangGraph - Day16](#16-agents-as-graphs-with-langgraph---day16)
+  - [17. Multi-Agent Crews with CrewAI - Day17](#17-multi-agent-crews-with-crewai---day17)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -457,6 +458,26 @@ result = await graph.ainvoke(Command(resume="yes"), config)   # continue after t
 
 Run: `uv run python main.py`
 
+## 17. Multi-Agent Crews with CrewAI - Day17
+
+[CrewAI](https://docs.crewai.com) is a higher-level take on Day14. You declare **Agents** (role, goal, backstory, tools), **Tasks**, and a **Crew** that runs them, either **sequentially** or **hierarchically**. In a hierarchical crew a manager LLM delegates the work.
+
+```python
+researcher = Agent(role="AI Researcher", goal="Research AI agent concepts...",
+                   backstory="...", llm=LLM(model="ollama/qwen3:1.7b"), tools=[mcp_current_time])
+
+crew = Crew(agents=[researcher, coder, reviewer],
+            tasks=[research_task, coding_task, review_task],
+            process=Process.hierarchical, manager_llm=manager_llm,
+            memory=True, embedder={"provider": "ollama",
+                                   "config": {"model_name": "nomic-embed-text"}})
+result = crew.kickoff()
+```
+
+- [`Day17_P1`](./Day17/Day17_P1/) **CrewAI crew:** researcher, coder and reviewer with sequential tasks on a local Ollama model.
+
+Run: `uv run python main.py`
+
 ---
 
 ## Lesson Index
@@ -511,6 +532,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 44 | [`Day16_P1`](./Day16/Day16_P1/) | First LangGraph StateGraph with a planner node |
 | 45 | [`Day16_P2`](./Day16/Day16_P2/) | Plan -> tool -> answer graph with conditional edges |
 | 46 | [`Day16_P3`](./Day16/Day16_P3/) | Human-in-the-loop approval with interrupt() |
+| 47 | [`Day17_P1`](./Day17/Day17_P1/) | Multi-agent crew with CrewAI |
 
 ## Known Issues
 
