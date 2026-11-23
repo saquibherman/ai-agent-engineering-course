@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 19 of 73 lessons committed. Latest: `Day06_P5`, End-to-end RAG over the knowledge folder.
+> **Progress:** 20 of 73 lessons committed. Latest: `Day07_P1`, LLM-based tool planner.
 
 ## Overview
 
@@ -19,6 +19,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [4. Hand-Written Tools and a Router - Day04](#4-hand-written-tools-and-a-router---day04)
   - [5. File Tools and Grounded Q&A - Day05](#5-file-tools-and-grounded-qa---day05)
   - [6. Retrieval: Keywords to Embeddings (First RAG) - Day06](#6-retrieval-keywords-to-embeddings-first-rag---day06)
+  - [7. LLM-Based Tool Planner - Day07](#7-llm-based-tool-planner---day07)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -213,6 +214,27 @@ context = documents[best_document]                              # → goes into 
 
 Run: `uv run python rag.py`
 
+## 7. LLM-Based Tool Planner - Day07
+
+Instead of keyword rules, the **LLM chooses the tool**. The planner prompt lists the available tools with a description of when to use each, and asks for *only* a tool name or `none`. This separates *deciding* what to do from *doing* it, which every later agent relies on.
+
+```python
+planner_prompt = f"""You are an AI planner.
+Available tools:
+1. get_current_time - Use when the user asks for the current date or time.
+2. roll_dice        - Use when the user asks to roll a dice.
+3. generate_password - Use when the user wants a secure password.
+If no tool is required, return: none
+Return ONLY the tool name.
+User Request: {user_request}"""
+```
+
+- [`Day07_P1`](./Day07/Day07_P1/) **LLM tool planner:** `planner.choose_tool()`, tested by `test_planner.py`.
+
+Run: `uv run python assistant.py`
+
+**Note:** small models sometimes add extra words around the tool name, which is why the planner `.strip()`s the reply and the prompt insists on "ONLY". Days 14 and 21 handle this more strictly with structured JSON and Pydantic validation.
+
 ---
 
 ## Lesson Index
@@ -240,6 +262,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 17 | [`Day06_P3`](./Day06/Day06_P3/) | Text embeddings with nomic-embed-text |
 | 18 | [`Day06_P4`](./Day06/Day06_P4/) | Cosine similarity between embeddings |
 | 19 | [`Day06_P5`](./Day06/Day06_P5/) | End-to-end RAG over the knowledge folder |
+| 20 | [`Day07_P1`](./Day07/Day07_P1/) | LLM-based tool planner |
 
 ## Known Issues
 
