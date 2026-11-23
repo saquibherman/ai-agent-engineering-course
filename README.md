@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 17 of 73 lessons committed. Latest: `Day06_P3`, Text embeddings with nomic-embed-text.
+> **Progress:** 18 of 73 lessons committed. Latest: `Day06_P4`, Cosine similarity between embeddings.
 
 ## Overview
 
@@ -208,6 +208,7 @@ context = documents[best_document]                              # → goes into 
 - [`Day06_P1`](./Day06/Day06_P1/) **Load a knowledge folder:** `load_documents()` reads every `.txt` file in `knowledge/` into a dict.
 - [`Day06_P2`](./Day06/Day06_P2/) **Keyword retrieval:** `retrieve(query)` returns the first document that contains the query.
 - [`Day06_P3`](./Day06/Day06_P3/) **Embeddings:** `create_embedding()` calls Ollama's `nomic-embed-text`.
+- [`Day06_P4`](./Day06/Day06_P4/) **Cosine similarity:** `similarity.cosine_similarity()` compares two embeddings numerically.
 
 Run: `uv run python rag.py`
 
@@ -236,6 +237,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 15 | [`Day06_P1`](./Day06/Day06_P1/) | Load a knowledge folder |
 | 16 | [`Day06_P2`](./Day06/Day06_P2/) | Naive keyword retrieval |
 | 17 | [`Day06_P3`](./Day06/Day06_P3/) | Text embeddings with nomic-embed-text |
+| 18 | [`Day06_P4`](./Day06/Day06_P4/) | Cosine similarity between embeddings |
 
 ## Known Issues
 
