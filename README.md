@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 6 of 73 lessons committed. Latest: `Day03_P1`, System prompt persona.
+> **Progress:** 7 of 73 lessons committed. Latest: `Day03_P2`, Selectable personas at startup.
 
 ## Overview
 
@@ -143,6 +143,7 @@ messages = [{"role": "system", "content": roles.get(choice, "You are a helpful A
 ```
 
 - [`Day03_P1`](./Day03/Day03_P1/) **System prompt persona:** a fixed "friendly AI teacher" persona.
+- [`Day03_P2`](./Day03/Day03_P2/) **Selectable personas:** at startup the user picks one of five personas: teacher, Python expert, travel guide, motivational coach or interviewer.
 
 Run: `uv run python assistant.py`
 
@@ -160,6 +161,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 4 | [`Day02_P2`](./Day02/Day02_P2/) | Print the raw conversation history after each turn |
 | 5 | [`Day02_P3`](./Day02/Day02_P3/) | Human-readable conversation history |
 | 6 | [`Day03_P1`](./Day03/Day03_P1/) | System prompt persona |
+| 7 | [`Day03_P2`](./Day03/Day03_P2/) | Selectable personas at startup |
 
 ## Known Issues
 
