@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 14 of 73 lessons committed. Latest: `Day05_P3`, Grounded question answering ("ask <file> <question>").
+> **Progress:** 15 of 73 lessons committed. Latest: `Day06_P1`, Load a knowledge folder.
 
 ## Overview
 
@@ -18,6 +18,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [3. System Prompts and Personas - Day03](#3-system-prompts-and-personas---day03)
   - [4. Hand-Written Tools and a Router - Day04](#4-hand-written-tools-and-a-router---day04)
   - [5. File Tools and Grounded Q&A - Day05](#5-file-tools-and-grounded-qa---day05)
+  - [6. Retrieval: Keywords to Embeddings (First RAG) - Day06](#6-retrieval-keywords-to-embeddings-first-rag---day06)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -191,6 +192,23 @@ Question: {question}"""
 
 Run: `uv run python assistant.py`, then for example `ask notes.txt What is the project about?`
 
+## 6. Retrieval: Keywords to Embeddings (First RAG) - Day06
+
+You usually can't paste every document into the prompt, so you need to **retrieve** the relevant one first. Keyword search breaks when the wording differs. **Embeddings** turn text into vectors where similar meanings sit close together, and **cosine similarity** measures how close two of them are:
+
+$$\text{cos}(a, b) = \frac{a \cdot b}{\lVert a \rVert \, \lVert b \rVert}$$
+
+```python
+question_embedding = create_embedding(user_input)               # nomic-embed-text
+best_document = max(document_embeddings,
+                    key=lambda f: cosine_similarity(question_embedding, document_embeddings[f]))
+context = documents[best_document]                              # → goes into the prompt
+```
+
+- [`Day06_P1`](./Day06/Day06_P1/) **Load a knowledge folder:** `load_documents()` reads every `.txt` file in `knowledge/` into a dict.
+
+Run: `uv run python rag.py`
+
 ---
 
 ## Lesson Index
@@ -213,6 +231,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 12 | [`Day05_P1`](./Day05/Day05_P1/) | File-reading tool |
 | 13 | [`Day05_P2`](./Day05/Day05_P2/) | summarize / explain commands over local files |
 | 14 | [`Day05_P3`](./Day05/Day05_P3/) | Grounded question answering ("ask <file> <question>") |
+| 15 | [`Day06_P1`](./Day06/Day06_P1/) | Load a knowledge folder |
 
 ## Known Issues
 
