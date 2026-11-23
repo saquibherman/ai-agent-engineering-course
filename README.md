@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 53 of 73 lessons committed. Latest: `Day18_P4`, Self-verifying research agent and report generator.
+> **Progress:** 54 of 73 lessons committed. Latest: `Day19_P1`, LangChain ChatOllama model.
 
 ## Overview
 
@@ -33,6 +33,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [16. Agents as Graphs with LangGraph - Day16](#16-agents-as-graphs-with-langgraph---day16)
   - [17. Multi-Agent Crews with CrewAI - Day17](#17-multi-agent-crews-with-crewai---day17)
   - [18. Self-Verifying Web Research Agent - Day18](#18-self-verifying-web-research-agent---day18)
+  - [19. Rebuilding the Stack on LangChain - Day19](#19-rebuilding-the-stack-on-langchain---day19)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -508,6 +509,33 @@ if not response.message.tool_calls:                # model wants to stop…
 
 Run: `uv run python test_agent.py` (needs internet access)
 
+## 19. Rebuilding the Stack on LangChain - Day19
+
+Days 01–11 rebuilt in [LangChain](https://python.langchain.com), to show how much plumbing the framework handles:
+
+| Hand-built (earlier) | LangChain (Day19) |
+|---|---|
+| `OpenAI(base_url=...)` | `ChatOllama(model="qwen3:1.7b")` |
+| f-string prompts | `ChatPromptTemplate` with `{question}` |
+| call → parse manually | LCEL chain `prompt \| model \| StrOutputParser()` |
+| tool functions + planner prompt | `@tool` + `create_agent(model, tools)` |
+| custom MCP client | `MultiServerMCPClient` (langchain-mcp-adapters) |
+| embeddings + cosine search | `RecursiveCharacterTextSplitter` → `OllamaEmbeddings` → `FAISS` retriever |
+
+```python
+@tool
+def search_knowledge(question: str) -> str:
+    """Search the local knowledge base and return relevant information."""
+    return "\n\n".join(d.page_content for d in retriever.invoke(question))
+
+agent = create_agent(model=model, tools=await client.get_tools() + [search_knowledge])
+result = await agent.ainvoke({"messages": [{"role": "user", "content": "According to my notes, what is MCP?"}]})
+```
+
+- [`Day19_P1`](./Day19/Day19_P1/) **Model call:** `ChatOllama` "hello AI".
+
+Run: `uv run python main.py`; P8: `uv run python memory_with_history.py`; P9: `uv run python final_agent.py`
+
 ---
 
 ## Lesson Index
@@ -569,6 +597,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 51 | [`Day18_P2`](./Day18/Day18_P2/) | Research agent with Ollama native tool calling |
 | 52 | [`Day18_P3`](./Day18/Day18_P3/) | Research planning step |
 | 53 | [`Day18_P4`](./Day18/Day18_P4/) | Self-verifying research agent and report generator |
+| 54 | [`Day19_P1`](./Day19/Day19_P1/) | LangChain ChatOllama model |
 
 ## Known Issues
 
