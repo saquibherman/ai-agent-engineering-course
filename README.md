@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 24 of 73 lessons committed. Latest: `Day08_P3`, Planner built from discovered MCP tools.
+> **Progress:** 25 of 73 lessons committed. Latest: `Day08_P4`, Execute the chosen MCP tool and answer naturally.
 
 ## Overview
 
@@ -263,6 +263,7 @@ result = await client.call_tool("current_time", {})  # execute
 - [`Day08_P1`](./Day08/Day08_P1/) **MCP client and server:** a FastMCP time server and a client that connects and lists its tools (`test_client.py`).
 - [`Day08_P2`](./Day08/Day08_P2/) **MCP-backed agent:** `agent.py` calls the server's tool from the assistant flow.
 - [`Day08_P3`](./Day08/Day08_P3/) **Planner over MCP tools:** builds the planner prompt from the server's *discovered* tool names and descriptions, so adding a tool to the server needs no change in the agent.
+- [`Day08_P4`](./Day08/Day08_P4/) **Natural-language answers:** a second LLM call turns the raw tool result into a conversational reply.
 
 Run: `uv run python agent.py`. The client starts `server.py` itself over stdio, so you don't need to run the server separately.
 
@@ -298,6 +299,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 22 | [`Day08_P1`](./Day08/Day08_P1/) | MCP server and client with FastMCP |
 | 23 | [`Day08_P2`](./Day08/Day08_P2/) | Agent skeleton on top of MCP |
 | 24 | [`Day08_P3`](./Day08/Day08_P3/) | Planner built from discovered MCP tools |
+| 25 | [`Day08_P4`](./Day08/Day08_P4/) | Execute the chosen MCP tool and answer naturally |
 
 ## Known Issues
 
