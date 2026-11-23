@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 25 of 73 lessons committed. Latest: `Day08_P4`, Execute the chosen MCP tool and answer naturally.
+> **Progress:** 26 of 73 lessons committed. Latest: `Day09_P1`, Explicit agent state.
 
 ## Overview
 
@@ -22,6 +22,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [7. LLM-Based Tool Planner - Day07](#7-llm-based-tool-planner---day07)
 - **Part II: Agent architecture**
   - [8. Model Context Protocol (MCP) - Day08](#8-model-context-protocol-mcp---day08)
+  - [9. Agent State and the Plan-Execute-Observe Loop - Day09](#9-agent-state-and-the-plan-execute-observe-loop---day09)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -267,6 +268,28 @@ result = await client.call_tool("current_time", {})  # execute
 
 Run: `uv run python agent.py`. The client starts `server.py` itself over stdio, so you don't need to run the server separately.
 
+## 9. Agent State and the Plan-Execute-Observe Loop - Day09
+
+An **agent** is a loop, not a single call. Each iteration it **plans** the next action from everything seen so far, **executes** it and **observes** the result, until the planner says `FINISH` or a step limit is reached. All of this is held in an explicit **state** object.
+
+```python
+state = create_state(user_request)                 # actions, observations, step counters
+while can_continue(state):                         # not finished and step < max_steps
+    action = planner(state, tools)                 # LLM sees request + past observations
+    if action == "FINISH":
+        finish(state, format_answer(state)); break
+    observation = await execute_action(action, state, client)
+    add_action(state, action)
+    record_observation(state, action, observation)
+    next_step(state)
+```
+
+- [`Day09_P1`](./Day09/Day09_P1/agent/) **Agent state:** `state.py` is a plain dict factory plus helpers (`add_action`, `record_observation`, `can_continue`, `finish`).
+
+Run: `cd agent && uv run python runner.py`
+
+**Why `max_steps` matters:** without it, a planner that never returns `FINISH` loops forever. The planner prompt also passes in `Completed Actions` and says "never repeat an action" to stop the model calling the same tool again and again.
+
 ---
 
 ## Lesson Index
@@ -300,6 +323,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 23 | [`Day08_P2`](./Day08/Day08_P2/) | Agent skeleton on top of MCP |
 | 24 | [`Day08_P3`](./Day08/Day08_P3/) | Planner built from discovered MCP tools |
 | 25 | [`Day08_P4`](./Day08/Day08_P4/) | Execute the chosen MCP tool and answer naturally |
+| 26 | [`Day09_P1`](./Day09/Day09_P1/) | Explicit agent state |
 
 ## Known Issues
 
