@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 50 of 73 lessons committed. Latest: `Day18_P1`, Web search and page-reading tools.
+> **Progress:** 51 of 73 lessons committed. Latest: `Day18_P2`, Research agent with Ollama native tool calling.
 
 ## Overview
 
@@ -502,6 +502,7 @@ if not response.message.tool_calls:                # model wants to stop…
 | `get_verified_research_notes` | Returns only the verified notes |
 
 - [`Day18_P1`](./Day18/Day18_P1/) **Web tools:** `search_web` and `read_webpage`, tested standalone.
+- [`Day18_P2`](./Day18/Day18_P2/) **Research agent:** `research_agent()` with native tool calling.
 
 Run: `uv run python test_agent.py` (needs internet access)
 
@@ -563,6 +564,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 48 | [`Day17_P2`](./Day17/Day17_P2/) | Give a CrewAI agent an MCP tool |
 | 49 | [`Day17_P3`](./Day17/Day17_P3/) | Hierarchical process and crew memory |
 | 50 | [`Day18_P1`](./Day18/Day18_P1/) | Web search and page-reading tools |
+| 51 | [`Day18_P2`](./Day18/Day18_P2/) | Research agent with Ollama native tool calling |
 
 ## Known Issues
 
