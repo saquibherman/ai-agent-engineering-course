@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 42 of 73 lessons committed. Latest: `Day14_P5`, Parallel agents with asyncio.gather.
+> **Progress:** 43 of 73 lessons committed. Latest: `Day15`, Production hardening of the multi-agent system.
 
 ## Overview
 
@@ -28,6 +28,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [12. Advanced RAG Pipeline - Day12](#12-advanced-rag-pipeline---day12)
   - [13. Multi-Server MCP and Remote Servers - Day13](#13-multi-server-mcp-and-remote-servers---day13)
   - [14. Multi-Agent Systems - Day14](#14-multi-agent-systems---day14)
+  - [15. Production Hardening - Day15](#15-production-hardening---day15)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -401,6 +402,28 @@ state = {"task": task, "research": "", "code": "", "review": "", "history": [], 
 
 Run: `uv run python main.py`; P5 also: `uv run python parallel_demo.py`
 
+## 15. Production Hardening - Day15
+
+The same multi-agent system, made robust:
+
+| Concern | File | What it does |
+|---|---|---|
+| Configuration | `config.py` | Every setting comes from `.env` with a default (`MODEL`, `MAX_REVISIONS`, `MAX_RETRIES`, `TIMEOUT`). |
+| Reliability | `llm.py` | `call_llm()` retries with linear backoff (2 s, 4 s, …) and a client timeout. |
+| Observability | `logger.py` | Logs as `time \| level \| message` for each attempt and failure. |
+| Input safety | `validation.py` | Rejects empty tasks and tasks over 5,000 characters. |
+| Least privilege | `permissions.py` | Each worker has a tool allowlist; for example, `coding` can `read_file` but not `get_weather`. |
+
+```python
+TOOL_PERMISSIONS = {"research": {"get_weather", "read_file"}, "coding": {"read_file"}, ...}
+def is_tool_allowed(agent_name, tool_name):
+    return tool_name in TOOL_PERMISSIONS.get(agent_name, set())   # unknown agent → no tools
+```
+
+- [`Day15`](./Day15/Day15/): `agent/` holds the manager and state, `workers/` holds the research, coding and reviewer agents, and `main.py` is the entry point.
+
+Run: `uv run python main.py`
+
 ---
 
 ## Lesson Index
@@ -451,6 +474,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 40 | [`Day14_P3`](./Day14/Day14_P3/) | Structured JSON review and a revision cycle |
 | 41 | [`Day14_P4`](./Day14/Day14_P4/) | Cap the number of revisions |
 | 42 | [`Day14_P5`](./Day14/Day14_P5/) | Parallel agents with asyncio.gather |
+| 43 | [`Day15`](./Day15/Day15/) | Production hardening of the multi-agent system |
 
 ## Known Issues
 
@@ -458,6 +482,7 @@ Open problems in the course code, kept as-is so each lesson matches the course.
 
 - **Model names vary:** the `.env` template uses `qwen3:4b-gpu`, but several days hard-code `qwen3:1.7b` or `qwen3:4b` (see [Setup](#setup)), so pull all of them.
 - **Day09_P2 `test_state.py`:** it imports `from Day09.agent.state import *`, a package path from the course's original layout, so it fails when run from `Day09_P2/agent`. `Day09_P1/agent/test_state.py` is the working version.
+- **Day15 `main.py` prints nothing after the run:** a `return` sits at function level right after the `try/except`, so the research, code and review sections and the permission demo are skipped. Indenting the `return` into the `except` block fixes it.
 
 ## Useful Links
 
