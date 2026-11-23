@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 28 of 73 lessons committed. Latest: `Day10_P1`, LLM task decomposition.
+> **Progress:** 29 of 73 lessons committed. Latest: `Day10_P2`, Task-driven agent loop.
 
 ## Overview
 
@@ -304,6 +304,7 @@ def decompose_task(user_request):
 ```
 
 - [`Day10_P1`](./Day10/Day10_P1/) **Task decomposition:** `task_planner.decompose_task()` returns a list of subtasks (`test_task_planner.py`).
+- [`Day10_P2`](./Day10/Day10_P2/) **Decomposition and agent loop:** combines it with Day09's loop, plus `answer.py` to format the final answer.
 
 Run: `uv run python runner.py`
 
@@ -343,6 +344,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 26 | [`Day09_P1`](./Day09/Day09_P1/) | Explicit agent state |
 | 27 | [`Day09_P2`](./Day09/Day09_P2/) | Plan -> Execute -> Observe loop over MCP |
 | 28 | [`Day10_P1`](./Day10/Day10_P1/) | LLM task decomposition |
+| 29 | [`Day10_P2`](./Day10/Day10_P2/) | Task-driven agent loop |
 
 ## Known Issues
 
