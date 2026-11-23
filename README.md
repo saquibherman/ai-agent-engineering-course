@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 36 of 73 lessons committed. Latest: `Day13_P2`, Agent loop over the multi-server registry with JSON actions.
+> **Progress:** 37 of 73 lessons committed. Latest: `Day13_P3`, Remote MCP server over HTTP.
 
 ## Overview
 
@@ -373,6 +373,13 @@ mcp.run(transport="http", host="127.0.0.1", port=8000)
 
 - [`Day13_P1`](./Day13/Day13_P1/) **Multi-server registry:** `mcp_manager.create_tool_registry()` over the time and weather servers (`registry_demo.py`).
 - [`Day13_P2`](./Day13/Day13_P2/) **Agent loop over the registry:** the full plan-execute-observe loop over two stdio servers.
+- [`Day13_P3`](./Day13/Day13_P3/) **Remote MCP over HTTP:** the weather server is served at `http://127.0.0.1:8000/mcp`.
+
+Run P3 in two terminals:
+```bash
+uv run python weather-mcp-server/server.py     # terminal 1: HTTP server on :8000
+uv run python runner.py                        # terminal 2: agent (launches the time server via stdio)
+```
 
 ---
 
@@ -418,6 +425,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 34 | [`Day12`](./Day12/Day12/) | Advanced RAG pipeline (chunking, Chroma, hybrid search, reranking) |
 | 35 | [`Day13_P1`](./Day13/Day13_P1/) | Multi-server MCP tool registry |
 | 36 | [`Day13_P2`](./Day13/Day13_P2/) | Agent loop over the multi-server registry with JSON actions |
+| 37 | [`Day13_P3`](./Day13/Day13_P3/) | Remote MCP server over HTTP |
 
 ## Known Issues
 
