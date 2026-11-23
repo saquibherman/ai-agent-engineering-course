@@ -27,7 +27,7 @@ def main():
         f"\nValidation error: {e}"
         )
 
-    return
+        return
 
     print("\n" + "=" * 50)
     print(" RESEARCH")
