@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 12 of 73 lessons committed. Latest: `Day05_P1`, File-reading tool.
+> **Progress:** 13 of 73 lessons committed. Latest: `Day05_P2`, summarize / explain commands over local files.
 
 ## Overview
 
@@ -186,6 +186,7 @@ Question: {question}"""
 ```
 
 - [`Day05_P1`](./Day05/Day05_P1/) **File-reading tool:** `read_text_file()` and sample files in `data/`, tested by `test_file_tool.py`.
+- [`Day05_P2`](./Day05/Day05_P2/) **Wire it in:** file reads go through `tool_manager` and the assistant.
 
 Run: `uv run python assistant.py`, then for example `ask notes.txt What is the project about?`
 
@@ -209,6 +210,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 10 | [`Day04_P3`](./Day04/Day04_P3/) | Extract routing into a tool manager |
 | 11 | [`Day04_P4`](./Day04/Day04_P4/) | Wire the tool manager into the assistant |
 | 12 | [`Day05_P1`](./Day05/Day05_P1/) | File-reading tool |
+| 13 | [`Day05_P2`](./Day05/Day05_P2/) | summarize / explain commands over local files |
 
 ## Known Issues
 
