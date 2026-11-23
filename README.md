@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 41 of 73 lessons committed. Latest: `Day14_P4`, Cap the number of revisions.
+> **Progress:** 42 of 73 lessons committed. Latest: `Day14_P5`, Parallel agents with asyncio.gather.
 
 ## Overview
 
@@ -397,6 +397,7 @@ state = {"task": task, "research": "", "code": "", "review": "", "history": [], 
 - [`Day14_P2`](./Day14/Day14_P2/) **Dynamic manager:** `state.py` plus an LLM that decides which worker runs next.
 - [`Day14_P3`](./Day14/Day14_P3/) **Structured review:** the reviewer returns JSON (`status`/`feedback`), and the manager prompt gets strict routing rules.
 - [`Day14_P4`](./Day14/Day14_P4/) **Revision limit:** `revision_count` and `MAX_REVISIONS = 3` stop endless code-review cycles.
+- [`Day14_P5`](./Day14/Day14_P5/) **Parallel agents:** `parallel_demo.py` uses `asyncio.gather()` to run independent agents concurrently. The total time is the slowest agent's (≈4 s) instead of the sum of all of them (≈9 s).
 
 Run: `uv run python main.py`; P5 also: `uv run python parallel_demo.py`
 
@@ -449,6 +450,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 39 | [`Day14_P2`](./Day14/Day14_P2/) | LLM manager that chooses the next worker |
 | 40 | [`Day14_P3`](./Day14/Day14_P3/) | Structured JSON review and a revision cycle |
 | 41 | [`Day14_P4`](./Day14/Day14_P4/) | Cap the number of revisions |
+| 42 | [`Day14_P5`](./Day14/Day14_P5/) | Parallel agents with asyncio.gather |
 
 ## Known Issues
 
