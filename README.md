@@ -6,12 +6,14 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** the uv project is set up; lessons are added one commit at a time (73 in total).
+> **Progress:** 1 of 73 lessons committed. Latest: `Day01_P1`, First call to a local LLM (hello_ai.py).
 
 ## Overview
 
 - [Setup](#setup)
 - [Repository Layout](#repository-layout)
+- **Part I: Foundations, built by hand with the OpenAI client**
+  - [1. First Calls to a Local LLM - Day01](#1-first-calls-to-a-local-llm---day01)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -88,9 +90,35 @@ ai-agent-engineering-course/
 
 ---
 
+# Part I: Foundations
+
+## 1. First Calls to a Local LLM - Day01
+
+An LLM call is just an HTTP request: a list of **messages** (each with a `role` and `content`) goes in, and a completion comes out. Everything later in the course builds on this one call.
+
+```python
+client = OpenAI(base_url=os.getenv("BASE_URL"), api_key=os.getenv("API_KEY"))
+
+response = client.chat.completions.create(
+    model=os.getenv("MODEL"),
+    messages=[{"role": "user", "content": "What is Artificial Intelligence?"}],
+)
+print(response.choices[0].message.content)
+```
+
+- [`Day01_P1`](./Day01/Day01_P1/) **Hello AI:** `hello_ai.py` sends one question to the local model and prints the reply.
+
+Run: `uv run python hello_ai.py`
+
+---
+
 ## Lesson Index
 
-No lessons committed yet. The first one is `Day01_P1`.
+Every lesson below was added in its own commit; the commit message explains the code changes in detail.
+
+| # | Lesson | What it adds |
+|---|---|---|
+| 1 | [`Day01_P1`](./Day01/Day01_P1/) | First call to a local LLM (hello_ai.py) |
 
 ## Known Issues
 
