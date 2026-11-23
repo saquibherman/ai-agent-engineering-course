@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 33 of 73 lessons committed. Latest: `Day11_P4`, Checkpoint of the memory-augmented agent.
+> **Progress:** 34 of 73 lessons committed. Latest: `Day12`, Advanced RAG pipeline (chunking, Chroma, hybrid search, reranking).
 
 ## Overview
 
@@ -25,6 +25,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [9. Agent State and the Plan-Execute-Observe Loop - Day09](#9-agent-state-and-the-plan-execute-observe-loop---day09)
   - [10. Task Decomposition - Day10](#10-task-decomposition---day10)
   - [11. Persistent Semantic Memory - Day11](#11-persistent-semantic-memory---day11)
+  - [12. Advanced RAG Pipeline - Day12](#12-advanced-rag-pipeline---day12)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -327,6 +328,34 @@ Not everything is worth remembering. A second LLM call acts as a **memory extrac
 
 Run: `uv run python runner.py`. `memory.db` is created in the folder and is git-ignored (`*.db`).
 
+## 12. Advanced RAG Pipeline - Day12
+
+Day06 compared whole documents. Real RAG splits documents into **chunks**, stores them in a **vector database**, combines **semantic** and **keyword** scores (hybrid search), and **reranks** the candidates before generating an answer.
+
+```
+document → chunker (200 words, 50 overlap) → embeddings → Chroma (persistent)
+query → embed → Chroma top-5 → hybrid score = 0.7·semantic + 0.3·keyword
+      → LLM reranker (scores 0-100) → top-3 → generator → answer
+```
+
+```python
+semantic = 1 / (1 + distance)                     # Chroma distance → similarity
+combined = 0.7 * semantic + 0.3 * keyword_score(query, text)
+return rerank(query, top_candidates, top_k=3)     # LLM rates each chunk's relevance
+```
+
+- [`Day12`](./Day12/Day12/) **Advanced RAG pipeline:**
+  - `chunker.py`: overlapping word chunks; the overlap keeps sentences that cross a chunk boundary.
+  - `embeddings.py`: embeds the chunks.
+  - `chroma_store.py`: a Chroma `PersistentClient` in `./chroma_db`, with `upsert` so re-runs don't duplicate chunks.
+  - `retriever.py`: keyword scoring.
+  - `reranker.py`: the LLM gives each chunk a relevance score from 0 to 100 (temperature 0, `qwen3:1.7b`).
+  - `evaluation.py`: checks whether the expected chunk was retrieved.
+  - `generator.py`: writes the answer.
+  - `advanced_rag.py` connects these steps, and `main.py` is the interactive entry point.
+
+Run: `uv run python main.py`. It indexes `documents/python.txt` into `./chroma_db` (git-ignored), then answers questions until you type `quit`.
+
 ---
 
 ## Lesson Index
@@ -368,6 +397,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 31 | [`Day11_P2`](./Day11/Day11_P2/) | Memory-augmented agent loop |
 | 32 | [`Day11_P3`](./Day11/Day11_P3/) | LLM memory extraction - store only durable facts |
 | 33 | [`Day11_P4`](./Day11/Day11_P4/) | Checkpoint of the memory-augmented agent |
+| 34 | [`Day12`](./Day12/Day12/) | Advanced RAG pipeline (chunking, Chroma, hybrid search, reranking) |
 
 ## Known Issues
 
