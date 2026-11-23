@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 31 of 73 lessons committed. Latest: `Day11_P2`, Memory-augmented agent loop.
+> **Progress:** 32 of 73 lessons committed. Latest: `Day11_P3`, LLM memory extraction - store only durable facts.
 
 ## Overview
 
@@ -322,6 +322,7 @@ Not everything is worth remembering. A second LLM call acts as a **memory extrac
 
 - [`Day11_P1`](./Day11/Day11_P1/) **Persistent semantic memory:** `memory.py` provides `save_memory()` and semantic search over a `memory.db` SQLite file (`test_memory.py`).
 - [`Day11_P2`](./Day11/Day11_P2/) **Memory in the agent loop:** past memories are available during each run.
+- [`Day11_P3`](./Day11/Day11_P3/) **Memory extraction:** `memory_extractor.py` plus `save_semantic_memory()`, so only useful facts are stored.
 
 Run: `uv run python runner.py`. `memory.db` is created in the folder and is git-ignored (`*.db`).
 
@@ -364,6 +365,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 29 | [`Day10_P2`](./Day10/Day10_P2/) | Task-driven agent loop |
 | 30 | [`Day11_P1`](./Day11/Day11_P1/) | Persistent semantic memory in SQLite |
 | 31 | [`Day11_P2`](./Day11/Day11_P2/) | Memory-augmented agent loop |
+| 32 | [`Day11_P3`](./Day11/Day11_P3/) | LLM memory extraction - store only durable facts |
 
 ## Known Issues
 
