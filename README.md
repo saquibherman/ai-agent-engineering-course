@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 7 of 73 lessons committed. Latest: `Day03_P2`, Selectable personas at startup.
+> **Progress:** 8 of 73 lessons committed. Latest: `Day04_P1`, First hand-written tools.
 
 ## Overview
 
@@ -16,6 +16,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [1. First Calls to a Local LLM - Day01](#1-first-calls-to-a-local-llm---day01)
   - [2. Chat Loop and Conversation Memory - Day02](#2-chat-loop-and-conversation-memory---day02)
   - [3. System Prompts and Personas - Day03](#3-system-prompts-and-personas---day03)
+  - [4. Hand-Written Tools and a Router - Day04](#4-hand-written-tools-and-a-router---day04)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -147,6 +148,28 @@ messages = [{"role": "system", "content": roles.get(choice, "You are a helpful A
 
 Run: `uv run python assistant.py`
 
+## 4. Hand-Written Tools and a Router - Day04
+
+LLMs can't check the clock or generate truly random numbers. **Tools** are ordinary functions that do this for them. This day's routing is deliberately naive: keyword matching decides which tool to call, and the LLM is only the fallback.
+
+```python
+def execute_tool(user_input):
+    text = user_input.lower()
+    if "time" in text or "clock" in text:
+        return get_current_time()
+    if "dice" in text or "die" in text:
+        return f"You rolled {roll_dice()}"
+    if "password" in text:
+        return generate_password()
+    return None            # no tool matched → ask the LLM
+```
+
+- [`Day04_P1`](./Day04/Day04_P1/) **Standalone tools:** `get_current_time`, `roll_dice` and `generate_password` (which uses `secrets`, not `random`) in `tools.py`, plus `test_tools.py`.
+
+Run: `uv run python assistant.py`; tests: `uv run python test_tools.py`, `uv run python test_tool_manager.py`
+
+**Limitation:** "what time should I leave?" triggers the time tool. Day07 fixes this by letting the LLM choose the tool.
+
 ---
 
 ## Lesson Index
@@ -162,6 +185,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 5 | [`Day02_P3`](./Day02/Day02_P3/) | Human-readable conversation history |
 | 6 | [`Day03_P1`](./Day03/Day03_P1/) | System prompt persona |
 | 7 | [`Day03_P2`](./Day03/Day03_P2/) | Selectable personas at startup |
+| 8 | [`Day04_P1`](./Day04/Day04_P1/) | First hand-written tools |
 
 ## Known Issues
 
