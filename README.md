@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 37 of 73 lessons committed. Latest: `Day13_P3`, Remote MCP server over HTTP.
+> **Progress:** 38 of 73 lessons committed. Latest: `Day14_P1`, Multi-agent system with a fixed pipeline.
 
 ## Overview
 
@@ -27,6 +27,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [11. Persistent Semantic Memory - Day11](#11-persistent-semantic-memory---day11)
   - [12. Advanced RAG Pipeline - Day12](#12-advanced-rag-pipeline---day12)
   - [13. Multi-Server MCP and Remote Servers - Day13](#13-multi-server-mcp-and-remote-servers---day13)
+  - [14. Multi-Agent Systems - Day14](#14-multi-agent-systems---day14)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -381,6 +382,21 @@ uv run python weather-mcp-server/server.py     # terminal 1: HTTP server on :800
 uv run python runner.py                        # terminal 2: agent (launches the time server via stdio)
 ```
 
+## 14. Multi-Agent Systems - Day14
+
+One prompt that tries to research, code *and* review does each job worse than three **specialized agents**. A **manager** coordinates them through shared state.
+
+```python
+state = {"task": task, "research": "", "code": "", "review": "", "history": [], "revision_count": 0}
+# manager prompt rules (abridged):
+#   research empty → research;  research done, no code → coding;  code, no review → review
+#   review "needs_revision" and revisions < MAX → coding;  "approved" or MAX reached → finish
+```
+
+- [`Day14_P1`](./Day14/Day14_P1/) **Fixed pipeline:** `manager.py` runs research → coding → review in a fixed order.
+
+Run: `uv run python main.py`; P5 also: `uv run python parallel_demo.py`
+
 ---
 
 ## Lesson Index
@@ -426,6 +442,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 35 | [`Day13_P1`](./Day13/Day13_P1/) | Multi-server MCP tool registry |
 | 36 | [`Day13_P2`](./Day13/Day13_P2/) | Agent loop over the multi-server registry with JSON actions |
 | 37 | [`Day13_P3`](./Day13/Day13_P3/) | Remote MCP server over HTTP |
+| 38 | [`Day14_P1`](./Day14/Day14_P1/) | Multi-agent system with a fixed pipeline |
 
 ## Known Issues
 
