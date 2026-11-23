@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 20 of 73 lessons committed. Latest: `Day07_P1`, LLM-based tool planner.
+> **Progress:** 21 of 73 lessons committed. Latest: `Day07_P2`, Planner-driven assistant.
 
 ## Overview
 
@@ -230,6 +230,7 @@ User Request: {user_request}"""
 ```
 
 - [`Day07_P1`](./Day07/Day07_P1/) **LLM tool planner:** `planner.choose_tool()`, tested by `test_planner.py`.
+- [`Day07_P2`](./Day07/Day07_P2/) **Planner in the assistant:** `assistant.py` routes with `choose_tool()` instead of keywords.
 
 Run: `uv run python assistant.py`
 
@@ -263,6 +264,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 18 | [`Day06_P4`](./Day06/Day06_P4/) | Cosine similarity between embeddings |
 | 19 | [`Day06_P5`](./Day06/Day06_P5/) | End-to-end RAG over the knowledge folder |
 | 20 | [`Day07_P1`](./Day07/Day07_P1/) | LLM-based tool planner |
+| 21 | [`Day07_P2`](./Day07/Day07_P2/) | Planner-driven assistant |
 
 ## Known Issues
 
