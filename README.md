@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 2 of 73 lessons committed. Latest: `Day01_P2`, Interactive assistant loop (assistant.py).
+> **Progress:** 3 of 73 lessons committed. Latest: `Day02_P1`, Conversation memory with a growing messages list.
 
 ## Overview
 
@@ -14,6 +14,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
 - [Repository Layout](#repository-layout)
 - **Part I: Foundations, built by hand with the OpenAI client**
   - [1. First Calls to a Local LLM - Day01](#1-first-calls-to-a-local-llm---day01)
+  - [2. Chat Loop and Conversation Memory - Day02](#2-chat-loop-and-conversation-memory---day02)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -111,6 +112,25 @@ print(response.choices[0].message.content)
 
 Run: `uv run python hello_ai.py`
 
+## 2. Chat Loop and Conversation Memory - Day02
+
+LLMs are **stateless**: each request knows only the messages sent with it. Conversation memory is therefore just a `messages` list that grows every turn and is sent in full with each request.
+
+```python
+messages = []
+while True:
+    user_input = input("\nYou : ")
+    messages.append({"role": "user", "content": user_input})
+    reply = client.chat.completions.create(model=MODEL, messages=messages).choices[0].message.content
+    messages.append({"role": "assistant", "content": reply})   # the model "remembers" next turn
+```
+
+- [`Day02_P1`](./Day02/Day02_P1/) **Conversation loop:** an `input()` loop that appends both sides of the conversation to `messages`. Type `quit` to exit.
+
+Run: `uv run python assistant.py`
+
+**Note:** the whole history is re-sent every turn, so long chats cost more tokens and eventually exceed the model's context window. Later days replace this with retrieval-based memory (Day11).
+
 ---
 
 ## Lesson Index
@@ -121,6 +141,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 |---|---|---|
 | 1 | [`Day01_P1`](./Day01/Day01_P1/) | First call to a local LLM (hello_ai.py) |
 | 2 | [`Day01_P2`](./Day01/Day01_P2/) | Interactive assistant loop (assistant.py) |
+| 3 | [`Day02_P1`](./Day02/Day02_P1/) | Conversation memory with a growing messages list |
 
 ## Known Issues
 
