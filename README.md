@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 29 of 73 lessons committed. Latest: `Day10_P2`, Task-driven agent loop.
+> **Progress:** 30 of 73 lessons committed. Latest: `Day11_P1`, Persistent semantic memory in SQLite.
 
 ## Overview
 
@@ -24,6 +24,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [8. Model Context Protocol (MCP) - Day08](#8-model-context-protocol-mcp---day08)
   - [9. Agent State and the Plan-Execute-Observe Loop - Day09](#9-agent-state-and-the-plan-execute-observe-loop---day09)
   - [10. Task Decomposition - Day10](#10-task-decomposition---day10)
+  - [11. Persistent Semantic Memory - Day11](#11-persistent-semantic-memory---day11)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -308,6 +309,21 @@ def decompose_task(user_request):
 
 Run: `uv run python runner.py`
 
+## 11. Persistent Semantic Memory - Day11
+
+Day02's `messages` list disappears when the program exits and grows without limit. **Long-term memory** fixes both problems: it saves memories to **SQLite** together with their **embeddings**, then retrieves only the *relevant* ones by cosine similarity. It's the same idea as RAG, applied to the agent's own history.
+
+```sql
+CREATE TABLE memories (id INTEGER PRIMARY KEY, user_message TEXT,
+                       assistant_message TEXT, embedding TEXT, created_at TIMESTAMP)
+```
+
+Not everything is worth remembering. A second LLM call acts as a **memory extractor**. It returns one durable fact (preferences, goals, skills, projects) or `NONE` for one-off things like the current time or a dice roll.
+
+- [`Day11_P1`](./Day11/Day11_P1/) **Persistent semantic memory:** `memory.py` provides `save_memory()` and semantic search over a `memory.db` SQLite file (`test_memory.py`).
+
+Run: `uv run python runner.py`. `memory.db` is created in the folder and is git-ignored (`*.db`).
+
 ---
 
 ## Lesson Index
@@ -345,6 +361,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 27 | [`Day09_P2`](./Day09/Day09_P2/) | Plan -> Execute -> Observe loop over MCP |
 | 28 | [`Day10_P1`](./Day10/Day10_P1/) | LLM task decomposition |
 | 29 | [`Day10_P2`](./Day10/Day10_P2/) | Task-driven agent loop |
+| 30 | [`Day11_P1`](./Day11/Day11_P1/) | Persistent semantic memory in SQLite |
 
 ## Known Issues
 
