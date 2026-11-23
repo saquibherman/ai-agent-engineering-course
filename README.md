@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 69 of 73 lessons committed. Latest: `Day21_P1`, Full-stack research app - FastAPI serving a static frontend.
+> **Progress:** 70 of 73 lessons committed. Latest: `Day21_P2`, Wire the research agent to the UI via POST /chat.
 
 ## Overview
 
@@ -624,6 +624,7 @@ async def research(topic: str):
 The blocking agent runs in a **thread** (`asyncio.to_thread`) so the event loop stays free to stream. `call_soon_threadsafe` is the safe way to hand events from that thread to the async queue. The browser reads the stream with `fetch()` and `response.body.getReader()`.
 
 - [`Day21_P1`](./Day21/Day21_P1/) **Frontend shell:** FastAPI serves `frontend/` with no agent connected yet.
+- [`Day21_P2`](./Day21/Day21_P2/) **Wire the agent:** the Day18 research agent and tools behind `/chat`.
 
 Run: `uv run uvicorn main:app --reload`, then open http://127.0.0.1:8000 (needs internet access for web search).
 
@@ -704,6 +705,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 67 | [`Day20_P5`](./Day20/Day20_P5/) | Retries, timeouts, rate limiting and structured logs |
 | 68 | [`Day20_P6`](./Day20/Day20_P6/) | Serve the MCP + RAG agent, add evaluation and Docker |
 | 69 | [`Day21_P1`](./Day21/Day21_P1/) | Full-stack research app - FastAPI serving a static frontend |
+| 70 | [`Day21_P2`](./Day21/Day21_P2/) | Wire the research agent to the UI via POST /chat |
 
 ## Known Issues
 
