@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 52 of 73 lessons committed. Latest: `Day18_P3`, Research planning step.
+> **Progress:** 53 of 73 lessons committed. Latest: `Day18_P4`, Self-verifying research agent and report generator.
 
 ## Overview
 
@@ -504,6 +504,7 @@ if not response.message.tool_calls:                # model wants to stop…
 - [`Day18_P1`](./Day18/Day18_P1/) **Web tools:** `search_web` and `read_webpage`, tested standalone.
 - [`Day18_P2`](./Day18/Day18_P2/) **Research agent:** `research_agent()` with native tool calling.
 - [`Day18_P3`](./Day18/Day18_P3/) **Planning first:** `create_research_plan()` runs before any searching (`test_planner.py`).
+- [`Day18_P4`](./Day18/Day18_P4/) **Verified notebook and report:** note, verify and report tools. `generate_report()` writes a 7-section report (summary through sources) using *only* verified findings.
 
 Run: `uv run python test_agent.py` (needs internet access)
 
@@ -567,6 +568,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 50 | [`Day18_P1`](./Day18/Day18_P1/) | Web search and page-reading tools |
 | 51 | [`Day18_P2`](./Day18/Day18_P2/) | Research agent with Ollama native tool calling |
 | 52 | [`Day18_P3`](./Day18/Day18_P3/) | Research planning step |
+| 53 | [`Day18_P4`](./Day18/Day18_P4/) | Self-verifying research agent and report generator |
 
 ## Known Issues
 
