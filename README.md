@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 43 of 73 lessons committed. Latest: `Day15`, Production hardening of the multi-agent system.
+> **Progress:** 44 of 73 lessons committed. Latest: `Day16_P1`, First LangGraph StateGraph with a planner node.
 
 ## Overview
 
@@ -29,6 +29,8 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
   - [13. Multi-Server MCP and Remote Servers - Day13](#13-multi-server-mcp-and-remote-servers---day13)
   - [14. Multi-Agent Systems - Day14](#14-multi-agent-systems---day14)
   - [15. Production Hardening - Day15](#15-production-hardening---day15)
+- **Part III: Agent frameworks**
+  - [16. Agents as Graphs with LangGraph - Day16](#16-agents-as-graphs-with-langgraph---day16)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -426,6 +428,35 @@ Run: `uv run python main.py`
 
 ---
 
+# Part III: Agent Frameworks
+
+## 16. Agents as Graphs with LangGraph - Day16
+
+[LangGraph](https://langchain-ai.github.io/langgraph/) models the agent loop as a **state graph**. **Nodes** update a typed state, and **conditional edges** decide what runs next. A **checkpointer** saves the state between steps, which makes **human-in-the-loop** pauses possible.
+
+```
+START → planner ─FINISH→ answer → END
+           │
+           └─tool→ approval ─yes→ tool ─step < max→ planner
+                       └─no→ answer        └─step ≥ max→ answer
+```
+
+```python
+def approval_node(state):
+    decision = interrupt({"message": "Approve this tool call?", "action": state["action"]})
+    return {"approval": decision}
+
+graph = builder.compile(checkpointer=InMemorySaver())
+result = await graph.ainvoke(initial_state, {"configurable": {"thread_id": "demo-1"}})
+result = await graph.ainvoke(Command(resume="yes"), config)   # continue after the pause
+```
+
+- [`Day16_P1`](./Day16/Day16_P1/) **Planner node:** a `StateGraph` with one planner node driven by MCP-discovered tools.
+
+Run: `uv run python main.py`
+
+---
+
 ## Lesson Index
 
 Every lesson below was added in its own commit; the commit message explains the code changes in detail.
@@ -475,6 +506,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 41 | [`Day14_P4`](./Day14/Day14_P4/) | Cap the number of revisions |
 | 42 | [`Day14_P5`](./Day14/Day14_P5/) | Parallel agents with asyncio.gather |
 | 43 | [`Day15`](./Day15/Day15/) | Production hardening of the multi-agent system |
+| 44 | [`Day16_P1`](./Day16/Day16_P1/) | First LangGraph StateGraph with a planner node |
 
 ## Known Issues
 
