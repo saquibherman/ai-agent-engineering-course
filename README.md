@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 65 of 73 lessons committed. Latest: `Day20_P3`, Lifespan hooks and health/readiness probes.
+> **Progress:** 66 of 73 lessons committed. Latest: `Day20_P4`, Configurable Ollama URL and service requirements.
 
 ## Overview
 
@@ -574,6 +574,7 @@ async def chat(request: Request, body: ChatRequest):
 - [`Day20_P1`](./Day20/Day20_P1/) **FastAPI shell:** a bare LangChain agent behind a chat endpoint.
 - [`Day20_P2`](./Day20/Day20_P2/) **Schemas and config:** Pydantic `ChatRequest`/`ChatResponse`, and `MODEL_NAME` read from `.env`.
 - [`Day20_P3`](./Day20/Day20_P3/) **Lifespan:** an `asynccontextmanager` handler logs startup and shutdown; uses `httpx` for outbound calls.
+- [`Day20_P4`](./Day20/Day20_P4/) **Pinned dependencies:** a service-level `requirements.txt` and a configurable `OLLAMA_BASE_URL`.
 
 Run locally (from `Day20/Day20_P6`):
 ```bash
@@ -656,6 +657,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 63 | [`Day20_P1`](./Day20/Day20_P1/) | Serve a LangChain agent over FastAPI |
 | 64 | [`Day20_P2`](./Day20/Day20_P2/) | Request/response schemas, config and error handling |
 | 65 | [`Day20_P3`](./Day20/Day20_P3/) | Lifespan hooks and health/readiness probes |
+| 66 | [`Day20_P4`](./Day20/Day20_P4/) | Configurable Ollama URL and service requirements |
 
 ## Known Issues
 
