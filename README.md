@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 49 of 73 lessons committed. Latest: `Day17_P3`, Hierarchical process and crew memory.
+> **Progress:** 50 of 73 lessons committed. Latest: `Day18_P1`, Web search and page-reading tools.
 
 ## Overview
 
@@ -32,6 +32,7 @@ Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of 
 - **Part III: Agent frameworks**
   - [16. Agents as Graphs with LangGraph - Day16](#16-agents-as-graphs-with-langgraph---day16)
   - [17. Multi-Agent Crews with CrewAI - Day17](#17-multi-agent-crews-with-crewai---day17)
+  - [18. Self-Verifying Web Research Agent - Day18](#18-self-verifying-web-research-agent---day18)
 - [Lesson Index](#lesson-index)
 - [Known Issues](#known-issues)
 - [Useful Links](#useful-links)
@@ -480,6 +481,30 @@ result = crew.kickoff()
 
 Run: `uv run python main.py`
 
+## 18. Self-Verifying Web Research Agent - Day18
+
+This agent researches on the open web. It uses Ollama's **native tool calling**: Python functions are passed as `tools=[...]`, and the model returns structured `tool_calls` instead of plain text. To reduce hallucinated research, every finding must be **written down with evidence** and then **verified** before the agent may finish.
+
+```python
+response = chat(model="qwen3:4b", messages=messages, tools=TOOLS)
+if not response.message.tool_calls:                # model wants to stop…
+    if get_verified_research_notes():              # …only allowed with verified findings
+        return response.message.content
+    # otherwise push it to keep researching
+```
+
+| Tool | Purpose |
+|---|---|
+| `search_web` | DuckDuckGo HTML search → title, url, snippet |
+| `read_webpage` | Downloads a page, removes scripts and styles, returns the first 12,000 characters (and unwraps DuckDuckGo redirect URLs) |
+| `add_research_note` | Stores `source`, `finding` and `evidence` |
+| `verify_finding` | Asks the LLM whether the evidence supports the finding |
+| `get_verified_research_notes` | Returns only the verified notes |
+
+- [`Day18_P1`](./Day18/Day18_P1/) **Web tools:** `search_web` and `read_webpage`, tested standalone.
+
+Run: `uv run python test_agent.py` (needs internet access)
+
 ---
 
 ## Lesson Index
@@ -537,6 +562,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 47 | [`Day17_P1`](./Day17/Day17_P1/) | Multi-agent crew with CrewAI |
 | 48 | [`Day17_P2`](./Day17/Day17_P2/) | Give a CrewAI agent an MCP tool |
 | 49 | [`Day17_P3`](./Day17/Day17_P3/) | Hierarchical process and crew memory |
+| 50 | [`Day18_P1`](./Day18/Day18_P1/) | Web search and page-reading tools |
 
 ## Known Issues
 
