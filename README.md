@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 55 of 73 lessons committed. Latest: `Day19_P2`, ChatPromptTemplate with a system persona.
+> **Progress:** 56 of 73 lessons committed. Latest: `Day19_P3`, LCEL chain (prompt | model | parser).
 
 ## Overview
 
@@ -534,6 +534,7 @@ result = await agent.ainvoke({"messages": [{"role": "user", "content": "Accordin
 
 - [`Day19_P1`](./Day19/Day19_P1/) **Model call:** `ChatOllama` "hello AI".
 - [`Day19_P2`](./Day19/Day19_P2/) **Prompt templates:** `ChatPromptTemplate` with a system persona.
+- [`Day19_P3`](./Day19/Day19_P3/) **LCEL chain:** `prompt | model | parser`.
 
 Run: `uv run python main.py`; P8: `uv run python memory_with_history.py`; P9: `uv run python final_agent.py`
 
@@ -600,6 +601,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 53 | [`Day18_P4`](./Day18/Day18_P4/) | Self-verifying research agent and report generator |
 | 54 | [`Day19_P1`](./Day19/Day19_P1/) | LangChain ChatOllama model |
 | 55 | [`Day19_P2`](./Day19/Day19_P2/) | ChatPromptTemplate with a system persona |
+| 56 | [`Day19_P3`](./Day19/Day19_P3/) | LCEL chain (prompt | model | parser) |
 
 ## Known Issues
 
