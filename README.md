@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 8 of 73 lessons committed. Latest: `Day04_P1`, First hand-written tools.
+> **Progress:** 9 of 73 lessons committed. Latest: `Day04_P2`, Keyword-routed tools inside the chat loop.
 
 ## Overview
 
@@ -165,6 +165,7 @@ def execute_tool(user_input):
 ```
 
 - [`Day04_P1`](./Day04/Day04_P1/) **Standalone tools:** `get_current_time`, `roll_dice` and `generate_password` (which uses `secrets`, not `random`) in `tools.py`, plus `test_tools.py`.
+- [`Day04_P2`](./Day04/Day04_P2/) **Tools in the chat loop:** keyword checks inside the loop call a tool before falling back to the LLM.
 
 Run: `uv run python assistant.py`; tests: `uv run python test_tools.py`, `uv run python test_tool_manager.py`
 
@@ -186,6 +187,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 6 | [`Day03_P1`](./Day03/Day03_P1/) | System prompt persona |
 | 7 | [`Day03_P2`](./Day03/Day03_P2/) | Selectable personas at startup |
 | 8 | [`Day04_P1`](./Day04/Day04_P1/) | First hand-written tools |
+| 9 | [`Day04_P2`](./Day04/Day04_P2/) | Keyword-routed tools inside the chat loop |
 
 ## Known Issues
 
