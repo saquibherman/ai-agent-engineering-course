@@ -355,7 +355,7 @@ combined = 0.7 * semantic + 0.3 * keyword_score(query, text)
 return rerank(query, top_candidates, top_k=3)     # LLM rates each chunk's relevance
 ```
 
-- [`Day12`](./Day12/Day12/) **Advanced RAG pipeline:**
+- [`Day12`](./Day12/) **Advanced RAG pipeline:**
   - `chunker.py`: overlapping word chunks; the overlap keeps sentences that cross a chunk boundary.
   - `embeddings.py`: embeds the chunks.
   - `chroma_store.py`: a Chroma `PersistentClient` in `./chroma_db`, with `upsert` so re-runs don't duplicate chunks.
@@ -428,7 +428,7 @@ def is_tool_allowed(agent_name, tool_name):
     return tool_name in TOOL_PERMISSIONS.get(agent_name, set())   # unknown agent → no tools
 ```
 
-- [`Day15`](./Day15/Day15/): `agent/` holds the manager and state, `workers/` holds the research, coding and reviewer agents, and `main.py` is the entry point.
+- [`Day15`](./Day15/): `agent/` holds the manager and state, `workers/` holds the research, coding and reviewer agents, and `main.py` is the entry point.
 
 Run: `uv run python main.py`
 
@@ -676,7 +676,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 31 | [`Day11_P2`](./Day11/Day11_P2/) | Memory-augmented agent loop |
 | 32 | [`Day11_P3`](./Day11/Day11_P3/) | LLM memory extraction - store only durable facts |
 | 33 | [`Day11_P4`](./Day11/Day11_P4/) | Checkpoint of the memory-augmented agent |
-| 34 | [`Day12`](./Day12/Day12/) | Advanced RAG pipeline (chunking, Chroma, hybrid search, reranking) |
+| 34 | [`Day12`](./Day12/) | Advanced RAG pipeline (chunking, Chroma, hybrid search, reranking) |
 | 35 | [`Day13_P1`](./Day13/Day13_P1/) | Multi-server MCP tool registry |
 | 36 | [`Day13_P2`](./Day13/Day13_P2/) | Agent loop over the multi-server registry with JSON actions |
 | 37 | [`Day13_P3`](./Day13/Day13_P3/) | Remote MCP server over HTTP |
@@ -685,7 +685,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 40 | [`Day14_P3`](./Day14/Day14_P3/) | Structured JSON review and a revision cycle |
 | 41 | [`Day14_P4`](./Day14/Day14_P4/) | Cap the number of revisions |
 | 42 | [`Day14_P5`](./Day14/Day14_P5/) | Parallel agents with asyncio.gather |
-| 43 | [`Day15`](./Day15/Day15/) | Production hardening of the multi-agent system |
+| 43 | [`Day15`](./Day15/) | Production hardening of the multi-agent system |
 | 44 | [`Day16_P1`](./Day16/Day16_P1/) | First LangGraph StateGraph with a planner node |
 | 45 | [`Day16_P2`](./Day16/Day16_P2/) | Plan -> tool -> answer graph with conditional edges |
 | 46 | [`Day16_P3`](./Day16/Day16_P3/) | Human-in-the-loop approval with interrupt() |
