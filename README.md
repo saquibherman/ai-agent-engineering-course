@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 45 of 73 lessons committed. Latest: `Day16_P2`, Plan -> tool -> answer graph with conditional edges.
+> **Progress:** 46 of 73 lessons committed. Latest: `Day16_P3`, Human-in-the-loop approval with interrupt().
 
 ## Overview
 
@@ -453,6 +453,7 @@ result = await graph.ainvoke(Command(resume="yes"), config)   # continue after t
 
 - [`Day16_P1`](./Day16/Day16_P1/) **Planner node:** a `StateGraph` with one planner node driven by MCP-discovered tools.
 - [`Day16_P2`](./Day16/Day16_P2/) **Plan-execute-answer graph:** adds tool and answer nodes and an `action` state field.
+- [`Day16_P3`](./Day16/Day16_P3/) **Human-in-the-loop:** `interrupt()` pauses before each tool call. The `__interrupt__` key in the result signals the pause, and `Command(resume=...)` continues with the user's yes/no answer.
 
 Run: `uv run python main.py`
 
@@ -509,6 +510,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 43 | [`Day15`](./Day15/Day15/) | Production hardening of the multi-agent system |
 | 44 | [`Day16_P1`](./Day16/Day16_P1/) | First LangGraph StateGraph with a planner node |
 | 45 | [`Day16_P2`](./Day16/Day16_P2/) | Plan -> tool -> answer graph with conditional edges |
+| 46 | [`Day16_P3`](./Day16/Day16_P3/) | Human-in-the-loop approval with interrupt() |
 
 ## Known Issues
 
