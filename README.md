@@ -6,7 +6,7 @@ Everything runs against local [Ollama](https://ollama.com) models, so the exampl
 
 Each `DayNN/DayNN_PM` folder is a self-contained, runnable step. Later parts of the same day build on the earlier ones, and each part was added in its own commit with a detailed description of the code changes (`git log --reverse` walks the course in order).
 
-> **Progress:** 60 of 73 lessons committed. Latest: `Day19_P7`, RAG with LangChain and FAISS.
+> **Progress:** 61 of 73 lessons committed. Latest: `Day19_P8`, Conversation memory demo in LangChain.
 
 ## Overview
 
@@ -539,6 +539,7 @@ result = await agent.ainvoke({"messages": [{"role": "user", "content": "Accordin
 - [`Day19_P5`](./Day19/Day19_P5/) **Tool-calling agent:** `create_agent` chooses and calls tools automatically.
 - [`Day19_P6`](./Day19/Day19_P6/) **MCP tools:** `MultiServerMCPClient` over stdio to the Day08 time server.
 - [`Day19_P7`](./Day19/Day19_P7/) **RAG:** `notes.txt` is split into chunks of 300 characters with 50 characters of overlap, embedded, and indexed in FAISS.
+- [`Day19_P8`](./Day19/Day19_P8/) **Conversation memory:** `memory_with_history.py` shows that passing earlier messages is what lets the model "remember" a name.
 
 Run: `uv run python main.py`; P8: `uv run python memory_with_history.py`; P9: `uv run python final_agent.py`
 
@@ -610,6 +611,7 @@ Every lesson below was added in its own commit; the commit message explains the 
 | 58 | [`Day19_P5`](./Day19/Day19_P5/) | Tool-calling agent with create_agent |
 | 59 | [`Day19_P6`](./Day19/Day19_P6/) | MCP tools in a LangChain agent |
 | 60 | [`Day19_P7`](./Day19/Day19_P7/) | RAG with LangChain and FAISS |
+| 61 | [`Day19_P8`](./Day19/Day19_P8/) | Conversation memory demo in LangChain |
 
 ## Known Issues
 
